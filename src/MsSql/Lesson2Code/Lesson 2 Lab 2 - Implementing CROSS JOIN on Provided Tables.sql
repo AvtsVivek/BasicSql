@@ -14,6 +14,13 @@ FROM Purchasing.Suppliers AS s
 
 --->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 --CROSS JOIN returns each Supplier name paired with all Categories
+
+SELECT COUNT(*) FROM Purchasing.Suppliers -- Gives 13
+
+SELECT COUNT(*) FROM Purchasing.SupplierCategories -- Gives 9
+
+SELECT 13*9 AS TotalCount -- Gives cross product count
+
 SELECT s.SupplierName, c.SupplierCategoryName
 FROM Purchasing.Suppliers AS s
 CROSS JOIN Purchasing.SupplierCategories as c
