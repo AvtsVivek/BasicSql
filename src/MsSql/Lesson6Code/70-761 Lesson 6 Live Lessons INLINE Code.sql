@@ -24,6 +24,10 @@ GROUP BY OrderDate
 SELECT OrderDate, COUNT(DISTINCT CustomerID) FROM Sales.Orders
 GROUP BY OrderDate
 
+SELECT YEAR(OrderDate) AS ORDER_YEAR, COUNT(CustomerID) AS CUSTOMER_COUNT  FROM Sales.Orders
+GROUP BY YEAR(OrderDate) 
+ORDER BY YEAR(OrderDate) 
+
 SELECT YEAR(OrderDate) AS ORDER_YEAR, COUNT(DISTINCT CustomerID) AS CUSTOMER_COUNT  FROM Sales.Orders
 GROUP BY YEAR(OrderDate) 
 ORDER BY YEAR(OrderDate) 
@@ -36,6 +40,19 @@ FROM (SELECT YEAR(OrderDate) AS order_year, CustomerID
 GROUP BY order_year
 ORDER BY order_year;
 
+
+-- Now lets try out using CTE
+
+WITH Customers_Year(order_year, CustomerID)
+AS 
+(
+	SELECT YEAR(OrderDate) AS order_year, CustomerID
+	FROM Sales.Orders
+)
+
+SELECT order_year, COUNT(DISTINCT CustomerID) FROM Customers_Year
+GROUP BY order_year
+ORDER BY order_year
 
 
 
