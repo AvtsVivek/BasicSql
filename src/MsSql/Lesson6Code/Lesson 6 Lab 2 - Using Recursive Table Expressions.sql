@@ -74,20 +74,11 @@ WITH Emp_CTE
 	  FROM Examples.Employees
 	  WHERE mgrid IS NULL
 	UNION ALL
-	SELECT e.empid, e.name, e.mgrid, e.title
-	  FROM Examples.Employees e
+	SELECT e.empid, e.name, e.mgrid, e.title FROM Examples.Employees e
 		INNER JOIN Emp_CTE ecte 
 		  ON ecte.empid = e.mgrid
 )
-SELECT *
-FROM Emp_CTE;
-
-
-
-
-
-
-
+SELECT * FROM Emp_CTE;
 
 -->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>....
 --Simple Recursive CTE-----------------------------
@@ -102,3 +93,18 @@ FROM Emp_CTE;
 --SELECT n
 --FROM Numbers
 ------------------------------
+
+;WITH Numbers AS
+(
+    SELECT n = 1
+    UNION ALL
+    SELECT n + 1
+    FROM Numbers
+    WHERE n+1 <= 10
+)
+SELECT n
+FROM Numbers
+
+
+
+
