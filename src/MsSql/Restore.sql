@@ -15,4 +15,3 @@ RESTORE DATABASE WideWorldImporters FROM DISK = N'C:\Users\msi\Downloads\WideWor
 MOVE 'WWI_Primary' TO 'C:\Users\msi\AppData\Local\Microsoft\Microsoft SQL Server Local DB\Instances\MSSQLLocalDB\WideWorldImporters.mdf'
 , MOVE 'WWI_Log' TO 'C:\Users\msi\AppData\Local\Microsoft\Microsoft SQL Server Local DB\Instances\MSSQLLocalDB\WideWorldImporters_Log.ldf'
 , MOVE 'WWI_UserData'  TO 'C:\Users\msi\AppData\Local\Microsoft\Microsoft SQL Server Local DB\Instances\MSSQLLocalDB\WideWorldImporters_UserData.ndf'
-

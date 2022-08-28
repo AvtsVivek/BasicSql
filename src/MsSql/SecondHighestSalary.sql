@@ -69,3 +69,24 @@ FROM Examples.Employeesalary
 ORDER BY Salary DESC
 OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY;
 
+-- Forth way
+SELECT TOP 1 SALARY FROM (
+SELECT TOP 2 * FROM Examples.Employeesalary
+ORDER BY Salary DESC) AS innerQuery
+ORDER BY Salary ASC
+
+-- If you want 4th highest salary
+SELECT TOP 1 SALARY FROM (
+SELECT TOP 4 * FROM Examples.Employeesalary -- put 4 here
+ORDER BY Salary DESC) AS innerQuery
+ORDER BY Salary ASC
+
+-- If you want 5th highest salary
+SELECT TOP 1 SALARY FROM (
+SELECT TOP 5 * FROM Examples.Employeesalary -- Put 5 here
+ORDER BY Salary DESC) AS innerQuery
+ORDER BY Salary ASC
+
+
+
+
