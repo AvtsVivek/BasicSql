@@ -5,6 +5,9 @@
 USE WideWorldImporters;
 GO
 
+CREATE SCHEMA Examples;
+GO
+
 --Create and fill Examples.CurrentOrders table--
 DROP TABLE IF EXISTS Examples.CurrentOrders;
 
@@ -19,6 +22,16 @@ FROM Sales.Customers
 WHERE CustomerID NOT IN
 	(SELECT CustomerID
 	FROM Examples.CurrentOrders);
+
+-- The above same query in another way, where we will not have to create a new table.
+
+SELECT *
+FROM Sales.Customers
+WHERE CustomerID NOT IN
+	(SELECT CustomerID
+  FROM Sales.Orders
+  WHERE OrderID BETWEEN 1 AND 20);
+
 ------------------------------------------------------
 /***************************************************/
 -----EXAMPLE 1: SUBQUERY MORE EFFICIENT THAN JOIN-----------

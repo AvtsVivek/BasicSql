@@ -5,6 +5,14 @@ USE WideWorldImporters;
 GO
 
 --Aggregating Price
+SELECT 
+	-- CustomerCategoryID,
+	AVG(CreditLimit) AS 'Average Credit Limit'
+FROM Sales.Customers
+-- GROUP BY CustomerCategoryID
+ORDER BY 'Average Credit Limit'
+
+--Aggregating Price
 SELECT CustomerCategoryID
       ,AVG(CreditLimit) AS 'Average Credit Limit'
 FROM Sales.Customers

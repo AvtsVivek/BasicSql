@@ -12,8 +12,11 @@ GO
 DROP TABLE IF EXISTS Examples.CustomerInfo;
 GO
 
+CREATE SCHEMA Examples;
+GO
 
-SELECT CustomerID, CustomerName, BuyingGroupID,PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID
+SELECT CustomerID, CustomerName, BuyingGroupID, 
+	PrimaryContactPersonID, DeliveryMethodID, DeliveryCityID
 INTO Examples.CustomerInfo
 FROM Sales.Customers;
 GO

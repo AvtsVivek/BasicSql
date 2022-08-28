@@ -3,6 +3,8 @@
 USE WideWorldImporters;
 GO
 
+SELECT FullName, PreferredName FROM Application.People WHERE PreferredName = 'Adam'
+
 SELECT  FullName, PreferredName
 FROM
 (SELECT * FROM Application.People) AS PersonDerivedTable
@@ -14,11 +16,28 @@ WHERE PreferredName = 'Adam';
 --placed by distinct customers per year
 --Outer query summarizes the results of the orders placed into derived table (derived_year)
 
+SELECT YEAR(OrderDate) AS order_year, CustomerID FROM Sales.Orders
+
+SELECT OrderDate, COUNT(CustomerID) FROM Sales.Orders
+GROUP BY OrderDate
+
+SELECT OrderDate, COUNT(DISTINCT CustomerID) FROM Sales.Orders
+GROUP BY OrderDate
+
+SELECT YEAR(OrderDate) AS ORDER_YEAR, COUNT(DISTINCT CustomerID) AS CUSTOMER_COUNT  FROM Sales.Orders
+GROUP BY YEAR(OrderDate) 
+ORDER BY YEAR(OrderDate) 
+
+--Below, the outer query summarizes the results of the orders placed into derived table (derived_year)
+
 SELECT order_year, COUNT(DISTINCT CustomerID) AS customer_count
-FROM (SELECT YEAR(OrderDate) AS order_year,CustomerID
+FROM (SELECT YEAR(OrderDate) AS order_year, CustomerID
 	  FROM Sales.Orders) AS derived_year
 GROUP BY order_year
 ORDER BY order_year;
+
+
+
 
 -->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 ------------Using CTE--------------------------------------------------

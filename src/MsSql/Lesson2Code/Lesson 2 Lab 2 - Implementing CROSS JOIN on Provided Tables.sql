@@ -94,7 +94,7 @@ FROM Examples.Employees AS E
 SELECT E.empid,
   E.name AS employee,
   M.name AS manager,
-  E.mgrid as managerID 
+  E.mgrid as managerID
 FROM Examples.Employees AS E
   LEFT OUTER JOIN Examples.Employees AS M
     ON E.mgrid = M.empid;
