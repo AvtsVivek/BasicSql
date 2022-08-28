@@ -59,3 +59,13 @@ SELECT MAX(Salary) AS SecondHighestSalary FROM Examples.Employeesalary
 WHERE salary < (SELECT MAX(salary) FROM Examples.Employeesalary)
 
 -- https://www.youtube.com/watch?v=mFdyfB7RdgA
+-- https://www.youtube.com/watch?v=ms-99n1KbT0
+
+-- THIRD WAY
+/******SELECT Query with OFFSET-FETCH clause   ******/
+--10 rows returned starting with the 6 row of previous query----
+SELECT SALARY AS SecondHighestSalary
+FROM Examples.Employeesalary
+ORDER BY Salary DESC
+OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY;
+
