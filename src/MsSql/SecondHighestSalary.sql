@@ -55,26 +55,42 @@ SELECT MAX(Salary) AS SecondHighestSalary FROM Examples.Employeesalary
 WHERE salary NOT IN (SELECT MAX(salary) FROM Examples.Employeesalary)
 
 -- SECOND WAY: Using Less than
+
 -- Step 1
 SELECT * FROM Examples.Employeesalary
 WHERE salary < (SELECT MAX(salary) FROM Examples.Employeesalary)
 ORDER BY Salary DESC
 
--- Stpe 2
+-- Step 2
 -- This gives null of the second salary does not exist.
 SELECT MAX(Salary) AS SecondHighestSalary FROM Examples.Employeesalary
 WHERE salary < (SELECT MAX(salary) FROM Examples.Employeesalary)
+
+-- The following can also be used.
+SELECT TOP 1 SALARY AS SecondHighestSalary FROM Examples.EmployeeSalary WHERE SALARY < (
+SELECT MAX(SALARY) FROM Examples.EmployeeSalary)
+ORDER BY salary DESC
 
 -- https://www.youtube.com/watch?v=mFdyfB7RdgA
 -- https://www.youtube.com/watch?v=ms-99n1KbT0
 
 -- THIRD WAY
+
 /******SELECT Query with OFFSET-FETCH clause   ******/
 --10 rows returned starting with the 6 row of previous query----
 SELECT SALARY AS SecondHighestSalary
 FROM Examples.Employeesalary
 ORDER BY Salary DESC
 OFFSET 1 ROWS FETCH NEXT 1 ROWS ONLY;
+
+-- Now you can parameterize
+declare @rankNumbr int
+set @rankNumbr = 3;
+
+SELECT SALARY AS SecondHighestSalary
+FROM Examples.Employeesalary
+ORDER BY Salary DESC
+OFFSET @rankNumbr ROWS FETCH NEXT 1 ROWS ONLY;
 
 -- Forth way
 SELECT TOP 1 SALARY FROM (
@@ -201,6 +217,4 @@ LEFT JOIN
 	) as SalRank
 	FROM Examples.EmployeeSalary) AS empSalary
 	ON TempRankTable.rankcol = empSalary.SalRank
-
-
 
