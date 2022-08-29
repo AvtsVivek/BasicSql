@@ -35,12 +35,18 @@ Insert into Examples.EmployeeSalary values(12000);
 
 SELECT * FROM Examples.EmployeeSalary 
 
+DROP TABLE [Examples].[EmployeeSalary]
+
 GO
 **********************************************/
 
 -- FIRST WAY: USING NOT in 
 -- Step 1
 SELECT * FROM Examples.Employeesalary
+WHERE salary NOT IN (SELECT MAX(salary) FROM Examples.Employeesalary)
+ORDER BY Salary DESC
+
+SELECT TOP 1 salary AS SecondHighestSalary FROM Examples.Employeesalary
 WHERE salary NOT IN (SELECT MAX(salary) FROM Examples.Employeesalary)
 ORDER BY Salary DESC
 
@@ -55,6 +61,7 @@ WHERE salary < (SELECT MAX(salary) FROM Examples.Employeesalary)
 ORDER BY Salary DESC
 
 -- Stpe 2
+-- This gives null of the second salary does not exist.
 SELECT MAX(Salary) AS SecondHighestSalary FROM Examples.Employeesalary
 WHERE salary < (SELECT MAX(salary) FROM Examples.Employeesalary)
 
@@ -86,6 +93,62 @@ SELECT TOP 1 SALARY FROM (
 SELECT TOP 5 * FROM Examples.Employeesalary -- Put 5 here
 ORDER BY Salary DESC) AS innerQuery
 ORDER BY Salary ASC
+
+-- Here is another way using RANK function
+-- STEP 1, Just the rank function
+SELECT
+	empid, salary,
+	RANK () OVER ( 
+		ORDER BY salary ASC
+	) rank_no 
+FROM
+	Examples.Employeesalary;
+
+-- Step 2. Using the above as inner query
+SELECT * FROM 
+(
+SELECT
+	empid, salary,
+	RANK () OVER ( 
+		ORDER BY salary ASC
+	) rank_no 
+FROM
+	Examples.Employeesalary 
+) AS Ranked_Salaries 
+WHERE rank_no = 2
+
+-- Step 3. Now you can parametrize
+declare @nthRan int
+--set @nthRan = 4
+set @nthRan = 14
+SELECT * FROM 
+(
+SELECT
+	empid, salary,
+	RANK () OVER ( 
+		ORDER BY salary ASC
+	) rank_no 
+FROM
+	Examples.Employeesalary 
+) AS Ranked_Salaries 
+WHERE rank_no = @nthRan
+
+
+
+
+-- Here is another working way using Dense Rank. Not sure how this is working.
+SELECT t.Seq, e.*
+FROM 
+( 
+	VALUES (2) 
+) t (Seq) LEFT JOIN
+     (SELECT e.*,
+             DENSE_RANK() OVER (ORDER BY Salary DESC) AS Num
+      FROM Examples.Employeesalary e
+     ) e 
+     ON e.Num = t.Seq;
+
+SELECT * FROM Examples.Employeesalary 
 
 
 
