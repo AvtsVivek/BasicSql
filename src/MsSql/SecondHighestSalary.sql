@@ -95,11 +95,14 @@ ORDER BY Salary DESC) AS innerQuery
 ORDER BY Salary ASC
 
 -- Here is another way using RANK function
+-- STEP 0, Look at the table data Examples.Employeesalary
+SELECT * FROM Examples.Employeesalary
 -- STEP 1, Just the rank function
+
 SELECT
 	empid, salary,
 	RANK () OVER ( 
-		ORDER BY salary ASC
+		ORDER BY salary DESC
 	) rank_no 
 FROM
 	Examples.Employeesalary;
@@ -110,7 +113,7 @@ SELECT * FROM
 SELECT
 	empid, salary,
 	RANK () OVER ( 
-		ORDER BY salary ASC
+		ORDER BY salary DESC
 	) rank_no 
 FROM
 	Examples.Employeesalary 
@@ -119,8 +122,7 @@ WHERE rank_no = 2
 
 -- Step 3. Now you can parametrize
 declare @nthRan int
---set @nthRan = 4
-set @nthRan = 14
+set @nthRan = 4
 SELECT * FROM 
 (
 SELECT
@@ -134,13 +136,11 @@ FROM
 WHERE rank_no = @nthRan
 
 
-
-
--- Here is another working way using Dense Rank. Not sure how this is working.
+-- Here is another working way using Dense Rank And Values. Not sure how this is working.
 SELECT t.Seq, e.*
 FROM 
 ( 
-	VALUES (2) 
+	VALUES (14) 
 ) t (Seq) LEFT JOIN
      (SELECT e.*,
              DENSE_RANK() OVER (ORDER BY Salary DESC) AS Num
@@ -148,8 +148,59 @@ FROM
      ) e 
      ON e.Num = t.Seq;
 
-SELECT * FROM Examples.Employeesalary 
+-- Here is how this works.
 
+-- First some exxamples on how to use values
+-- Example 1
+SELECT
+   FirstName,
+   LastName
+FROM
+   (VALUES 
+        (1, 'Peter', 'Griffin'),
+        (2, 'Homer', 'Simpson'),
+        (3, 'Ned', 'Flanders')
+   ) AS Idiots(IdiotId, FirstName, LastName)
+WHERE IdiotId = 2;
+
+-- Example 2
+
+declare @tempSeq int
+set @tempSeq = 4
+
+SELECT * FROM
+   (
+   VALUES(@tempSeq) 
+   ) AS t (Seq)
+--WHERE Seq = 2;
+
+-- Now you can do a left join with the RANK table.
+declare @rankVar int;
+set @rankVar = 4;
+
+SELECT * FROM 
+	(
+		VALUES (@rankVar)
+	)
+	AS TempRankTable(rank)
+
+SELECT * FROM Examples.EmployeeSalary
+
+declare @rankVar int;
+set @rankVar = 14;
+
+SELECT * FROM 
+	(
+		VALUES (@rankVar)
+	)
+	AS TempRankTable(rankcol)
+LEFT JOIN 
+(SELECT empid, salary, 
+	RANK() OVER (
+		ORDER BY SALARY DESC
+	) as SalRank
+	FROM Examples.EmployeeSalary) AS empSalary
+	ON TempRankTable.rankcol = empSalary.SalRank
 
 
 
