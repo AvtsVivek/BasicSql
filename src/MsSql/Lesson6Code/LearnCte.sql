@@ -1,3 +1,5 @@
+USE WideWorldImporters
+GO
 -- Simplist CTE
 ;WITH Sales_Orders AS 
 (
@@ -13,7 +15,11 @@ AS
 )
 SELECT * FROM Sales_Orders 
 
---This is another simple example.
+--This is another simple example. This is a recursive example
+
+SELECT n = 1;
+
+SELECT * FROM (VALUES(4)) AS TempTable(n)
 
 ;WITH Numbers AS
 (
@@ -88,6 +94,9 @@ Insert into Examples.Employees values('Vijay', 'Developer', 9);
 Insert into Examples.Employees values('Vivek', 'Senior Developer', 6);
 
 GO
+
+SELECT * FROM Examples.Employees 
+
 **********************************************/
 
 -- Step 1. Get the table as it is
